@@ -1,0 +1,8 @@
+<svg viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="480" fill="#2b2b2b"/>
+  <rect width="400" height="480" fill="#1f1f1f"/>
+  <circle cx="200" cy="180" r="80" fill="#3a3a3a"/>
+  <circle cx="200" cy="160" r="55" fill="#4a4a4a"/>
+  <path d="M120 340 Q200 260 280 340 L280 480 L120 480 Z" fill="#4a4a4a"/>
+  <text x="200" y="430" font-family="Arial, sans-serif" font-size="18" fill="#888" text-anchor="middle">FOTO DO CARLOS AQUI</text>
+</svg>

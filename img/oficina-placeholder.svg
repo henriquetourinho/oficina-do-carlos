@@ -1,0 +1,11 @@
+<svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="400" fill="#2b2b2b"/>
+  <rect x="40" y="280" width="520" height="6" fill="#444"/>
+  <circle cx="180" cy="240" r="55" fill="#1a1a1a" stroke="#555" stroke-width="6"/>
+  <circle cx="180" cy="240" r="20" fill="#444"/>
+  <circle cx="400" cy="240" r="55" fill="#1a1a1a" stroke="#555" stroke-width="6"/>
+  <circle cx="400" cy="240" r="20" fill="#444"/>
+  <rect x="120" y="140" width="360" height="110" rx="10" fill="#5a1a1a"/>
+  <rect x="150" y="100" width="220" height="60" rx="8" fill="#5a1a1a"/>
+  <text x="300" y="350" font-family="Arial, sans-serif" font-size="18" fill="#888" text-anchor="middle">FOTO DA OFICINA AQUI</text>
+</svg>
