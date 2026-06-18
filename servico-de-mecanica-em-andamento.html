@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Serviço de mecânica em andamento - Oficina do Carlos</title>
+  <meta name="description" content="Acompanhe o processo detalhado de revisão de motor na Oficina do Carlos.">
+  <meta name="keywords" content="mecânica, oficina, Carlos, Vila Verde, Salvador, motor, conserto">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://oficinadocarlos.com.br/servico-de-mecanica-em-andamento.html">
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+
+  <!-- ===== OPEN GRAPH ===== -->
+  <meta property="og:title" content="Serviço de mecânica em andamento - Oficina do Carlos">
+  <meta property="og:description" content="Acompanhe o processo detalhado de revisão de motor na Oficina do Carlos.">
+  <meta property="og:image" content="https://oficinadocarlos.com.br/img/seo.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Oficina do Carlos — Mecânica em Geral">
+  <meta property="og:url" content="https://oficinadocarlos.com.br/servico-de-mecanica-em-andamento.html">
+  <meta property="og:type" content="video.other">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Oficina do Carlos">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'oil-black': '#161513',
+            'plate-yellow': '#FFC72C',
+            'shop-red': '#C8102E',
+            'shop-red-dark': '#8E0B20',
+            'steel': '#3A3A38',
+            'steel-light': '#5C5B57',
+            'cream': '#F2EDE4',
+          },
+          fontFamily: {
+            'display': ['Archivo Black', 'sans-serif'],
+            'oswald': ['Oswald', 'sans-serif'],
+            'body': ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { background-color: #F2EDE4; font-family: 'Inter', sans-serif; }
+    .font-display { font-family: 'Archivo Black', sans-serif; }
+    .font-oswald { font-family: 'Oswald', sans-serif; }
+    
+    /* ===== CUSTOM PLAYER CSS ===== */
+    .custom-player {
+      position: relative; width: 100%; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); background: #000;
+    }
+    .custom-player video { width: 100%; max-height: 80vh; display: block; object-fit: contain; cursor: pointer; }
+    
+    .player-controls {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+      padding: 30px 20px 15px; opacity: 0; transition: opacity 0.3s;
+      display: flex; flex-direction: column; z-index: 10;
+    }
+    .custom-player:hover .player-controls,
+    .custom-player.paused .player-controls { opacity: 1; }
+
+    .prog-bar {
+      width: 100%; height: 6px; background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px; cursor: pointer; position: relative; margin-bottom: 12px; transition: height 0.1s;
+    }
+    .prog-bar:hover { height: 8px; }
+    .prog-filled {
+      height: 100%; background: #FFC72C; border-radius: 3px; width: 0%;
+      pointer-events: none; position: relative; box-shadow: 0 0 10px rgba(255, 199, 44, 0.5);
+    }
+    .prog-filled::after {
+      content: ''; position: absolute; right: -6px; top: 50%; transform: translateY(-50%);
+      width: 14px; height: 14px; background: #fff; border-radius: 50%; box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
+    .prog-hover-tip {
+      position: absolute; bottom: 16px; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: #fff;
+      font-size: 11px; padding: 3px 6px; border-radius: 4px; pointer-events: none; opacity: 0; transition: opacity 0.15s;
+    }
+
+    .ctrl-row { display: flex; align-items: center; justify-content: space-between; }
+    .ctrl-btn { color: #fff; cursor: pointer; background: none; border: none; padding: 5px; transition: color 0.2s; }
+    .ctrl-btn:hover { color: #FFC72C; }
+
+    .big-play {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 80px; height: 80px; background: rgba(255, 199, 44, 0.9); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      box-shadow: 0 0 30px rgba(255, 199, 44, 0.4); transition: all 0.2s; z-index: 5;
+    }
+    .big-play:hover { transform: translate(-50%, -50%) scale(1.1); background: #FFC72C; }
+    .custom-player:not(.paused) .big-play { opacity: 0; pointer-events: none; transform: translate(-50%, -50%) scale(1.5); }
+
+    /* Popups (Volume, Speed, Quality, Credits) */
+    .cp-vol-group, .cp-speed-group, .cp-quality-group, .cp-about-group { position: relative; display: flex; align-items: center; }
+    
+    .cp-vol-popup, .cp-speed-popup, .cp-quality-popup, .cp-about-popup {
+      position: absolute; bottom: calc(100% + 12px);
+      background: rgba(20, 20, 20, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+      opacity: 0; visibility: hidden; transition: all 0.2s;
+    }
+    .cp-vol-popup.show, .cp-speed-popup.show, .cp-quality-popup.show { opacity: 1; visibility: visible; transform: translateY(0) translateX(-50%); }
+    .cp-about-group:hover .cp-about-popup { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; }
+    
+    .cp-vol-popup { left: 50%; transform: translateX(-50%) translateY(6px); padding: 12px 10px 8px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .cp-speed-popup, .cp-quality-popup { left: 50%; transform: translateX(-50%) translateY(6px); padding: 6px 0; display: flex; flex-direction: column; min-width: 100px; }
+    .cp-about-popup { right: 0; transform: translateY(6px); padding: 12px; min-width: 150px; text-align: right; pointer-events: none; }
+
+    .cp-vol-slider {
+      -webkit-appearance: none; appearance: none; writing-mode: vertical-lr; direction: rtl;
+      width: 4px; height: 80px; border-radius: 2px; background: rgba(255,255,255,0.2); cursor: pointer;
+    }
+    .cp-vol-slider::-webkit-slider-runnable-track { width: 4px; height: 80px; border-radius: 2px; background: linear-gradient(to top, #FFC72C 0%, #FFC72C var(--vf, 100%), rgba(255,255,255,0.2) var(--vf, 100%), rgba(255,255,255,0.2) 100%); }
+    .cp-vol-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #fff; cursor: pointer; margin-left: -4px; }
+    
+    .cp-speed-opt, .cp-quality-opt { background: none; border: none; color: #ccc; padding: 6px 12px; text-align: left; font-size: 12px; cursor: pointer; transition: background 0.15s; }
+    .cp-speed-opt:hover, .cp-quality-opt:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .cp-speed-opt.active, .cp-quality-opt.active { color: #FFC72C; font-weight: bold; }
+  </style>
+</head>
+<body class="bg-cream text-oil-black antialiased">
+
+  <!-- HEADER -->
+  <header class="fixed top-0 left-0 w-full z-50 bg-oil-black/90 backdrop-blur-md border-b-4 border-plate-yellow transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 text-cream hover:text-plate-yellow transition-colors font-oswald font-medium">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Voltar para o Início
+      </a>
+      <a href="index.html" class="hidden sm:flex items-center gap-2 group">
+        <div class="bg-plate-yellow p-1.5 rounded-md group-hover:bg-cream transition-colors duration-300 shadow-sm">
+          <svg class="w-5 h-5 text-oil-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+        </div>
+        <span class="font-display text-plate-yellow tracking-tight text-xl group-hover:text-cream transition-colors duration-300">OFICINA<span class="text-cream group-hover:text-plate-yellow transition-colors duration-300"> DO CARLOS</span></span>
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-4xl mx-auto px-5 pt-32 pb-24">
+    
+    <div class="mb-8 text-center sm:text-left">
+      <div class="inline-flex items-center gap-2 border border-oil-black/10 bg-white/50 text-shop-red font-oswald font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
+        Vídeo Exclusivo
+      </div>
+      <h1 class="font-display text-3xl sm:text-5xl text-oil-black leading-tight">Serviço de mecânica em andamento</h1>
+      <p class="font-body text-steel-light mt-4 text-lg">Mais um serviço de confiança direto da Oficina do Carlos.</p>
+    </div>
+
+    <!-- PLAYER EMBEDDED -->
+    <div class="custom-player paused mb-8 shadow-2xl">
+      <video src="img/VID_20260617_195429.mp4" playsinline poster="img/ultimo.png"></video>
+      <div class="big-play" onclick="cpTogglePlay(this)">
+        <svg class="w-10 h-10 text-oil-black ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <div class="player-controls">
+        <div class="prog-bar" onmousedown="cpSeekStart(event, this)">
+          <div class="prog-filled"></div>
+          <div class="prog-hover-tip">0:00</div>
+        </div>
+        <div class="ctrl-row">
+          <div style="display:flex;align-items:center;gap:8px">
+            <button class="ctrl-btn play-btn" onclick="cpTogglePlay(this)">
+              <svg class="w-7 h-7 play-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="w-7 h-7 pause-icon hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+            <span class="cp-time" style="color:#fff;font-size:13px;white-space:nowrap;user-select:none">0:00 / 0:00</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:4px">
+            <div class="cp-vol-group">
+              <button class="ctrl-btn" onclick="cpToggleMute(this)">
+                <svg class="w-6 h-6 cp-vol-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                <svg class="w-6 h-6 cp-mute-icon hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+              </button>
+              <div class="cp-vol-popup">
+                <input type="range" class="cp-vol-slider" min="0" max="1" step="0.01" value="1" orient="vertical" oninput="cpVolChange(this)">
+                <span class="cp-vol-pct" style="color:#fff">100%</span>
+              </div>
+            </div>
+            <div class="cp-speed-group">
+              <button class="ctrl-btn cp-speed-btn" onclick="cpToggleSpeed(this)">
+                <span style="font-size:13px;font-weight:700">1x</span>
+              </button>
+              <div class="cp-speed-popup">
+                <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:6px 14px 8px;border-bottom:1px solid rgba(255,255,255,0.08)">Velocidade</div>
+                <button class="cp-speed-opt" data-speed="0.5" onclick="cpSetSpeed(this)">0.5x</button>
+                <button class="cp-speed-opt active" data-speed="1" onclick="cpSetSpeed(this)">Normal</button>
+                <button class="cp-speed-opt" data-speed="1.5" onclick="cpSetSpeed(this)">1.5x</button>
+                <button class="cp-speed-opt" data-speed="2" onclick="cpSetSpeed(this)">2x</button>
+              </div>
+            </div>
+            <div class="cp-quality-group">
+              <button class="ctrl-btn cp-quality-btn" onclick="cpToggleQuality(this)" title="Qualidade">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+              </button>
+              <div class="cp-quality-popup">
+                <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:6px 14px 8px;border-bottom:1px solid rgba(255,255,255,0.08)">Qualidade</div>
+                <button class="cp-quality-opt" data-qual="240p" onclick="cpSetQuality(this)">240p</button>
+                <button class="cp-quality-opt" data-qual="480p" onclick="cpSetQuality(this)">480p</button>
+                <button class="cp-quality-opt" data-qual="720p" onclick="cpSetQuality(this)">720p</button>
+                <button class="cp-quality-opt active" data-qual="1080p" onclick="cpSetQuality(this)">1080p</button>
+              </div>
+            </div>
+            <div class="cp-about-group">
+              <button class="ctrl-btn" title="Sobre o Player">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+              </button>
+              <div class="cp-about-popup">
+                <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px">Custom Player</div>
+                <div style="font-size:12px;color:#fff;line-height:1.5">
+                  Desenvolvido por<br>
+                  <a href="https://instagram.com/henrique_ntxa" target="_blank" style="color:#FFC72C;text-decoration:none;font-weight:700">Henrique Tourinho</a>
+                </div>
+              </div>
+            </div>
+            <button class="ctrl-btn" onclick="cpFullscreen(this)" title="Tela cheia">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DETAILS & ACTIONS -->
+    <div class="bg-white p-8 rounded-2xl shadow-[0_15px_30px_-10px_rgba(0,0,0,0.1)] border border-oil-black/5">
+      <h2 class="font-oswald text-2xl font-bold mb-4 text-oil-black">O que aprendemos com esse caso?</h2>
+      <p class="text-steel-light leading-relaxed mb-6">
+        Veja como o Carlos executa os serviços de mecânica passo a passo, sempre com cuidado e atenção aos detalhes do seu carro.
+      </p>
+
+      <div class="flex flex-col md:flex-row flex-wrap gap-4 pt-6 border-t border-cream">
+        <a href="https://wa.me/5571986573751?text=Oi%20Carlos%2C%20gostei%20do%20v%C3%ADdeo%20sobre%20motor%20e%20queria%20marcar%20uma%20revis%C3%A3o!" 
+           target="_blank" rel="noopener" 
+           class="flex-1 bg-gradient-to-r from-[#20B053] to-[#25D366] text-white font-oswald font-bold text-lg px-6 py-4 rounded-xl flex items-center justify-center gap-3 transition-transform hover:-translate-y-1 shadow-[0_8px_20px_rgba(37,211,102,0.3)]">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.94.56 3.76 1.53 5.3L2 22l4.92-1.6a9.86 9.86 0 0 0 5.12 1.41h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.05c-.24.69-1.4 1.32-1.92 1.4-.49.08-1.11.11-1.79-.11-.41-.13-.94-.3-1.62-.59-2.85-1.23-4.7-4.1-4.84-4.29-.14-.19-1.15-1.53-1.15-2.92 0-1.39.73-2.07.99-2.35.26-.28.56-.35.75-.35.19 0 .38 0 .54.01.17.01.41-.07.64.49.24.58.81 2 .88 2.15.07.15.12.33.02.53-.1.2-.15.32-.3.49-.15.17-.31.38-.44.51-.15.15-.3.3-.13.59.17.29.77 1.27 1.65 2.06 1.14 1.01 2.1 1.32 2.4 1.47.3.15.47.13.65-.05.18-.18.74-.86.94-1.16.2-.3.4-.25.67-.15.27.1 1.72.81 2.01.96.29.15.49.22.56.35.07.13.07.74-.17 1.43z"/></svg>
+          Agendar minha Revisão
+        </a>
+        <a href="https://chat.whatsapp.com/DXvgAqi5NlYD3lRDvuQDjM" 
+           target="_blank" rel="noopener" 
+           class="flex-1 min-w-[200px] bg-plate-yellow text-oil-black font-oswald font-bold text-lg px-6 py-4 rounded-xl flex items-center justify-center gap-3 transition-transform hover:-translate-y-1 shadow-[0_8px_20px_rgba(255,199,44,0.3)]">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.94.56 3.76 1.53 5.3L2 22l4.92-1.6a9.86 9.86 0 0 0 5.12 1.41h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.05c-.24.69-1.4 1.32-1.92 1.4-.49.08-1.11.11-1.79-.11-.41-.13-.94-.3-1.62-.59-2.85-1.23-4.7-4.1-4.84-4.29-.14-.19-1.15-1.53-1.15-2.92 0-1.39.73-2.07.99-2.35.26-.28.56-.35.75-.35.19 0 .38 0 .54.01.17.01.41-.07.64.49.24.58.81 2 .88 2.15.07.15.12.33.02.53-.1.2-.15.32-.3.49-.15.17-.31.38-.44.51-.15.15-.3.3-.13.59.17.29.77 1.27 1.65 2.06 1.14 1.01 2.1 1.32 2.4 1.47.3.15.47.13.65-.05.18-.18.74-.86.94-1.16.2-.3.4-.25.67-.15.27.1 1.72.81 2.01.96.29.15.49.22.56.35.07.13.07.74-.17 1.43z" /></svg>
+          Grupo VIP
+        </a>
+        <div class="flex-1 min-w-[200px] bg-oil-black text-white font-oswald font-bold px-6 py-4 rounded-xl flex items-center justify-between gap-3 shadow-[0_4px_15px_rgba(0,0,0,0.2)]">
+          <div class="flex items-center gap-3 text-lg">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+            Compartilhar:
+          </div>
+          <div class="flex items-center gap-4">
+            <a href="https://wa.me/?text=Olha%20esse%20v%C3%ADdeo%20do%20servi%C3%A7o%20em%20andamento%3A%20https%3A%2F%2Foficinadocarlos.com.br%2Fvideo1.html" 
+               target="_blank" rel="noopener" class="hover:text-plate-yellow transition-transform hover:scale-110" title="WhatsApp">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.94.56 3.76 1.53 5.3L2 22l4.92-1.6a9.86 9.86 0 0 0 5.12 1.41h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.05c-.24.69-1.4 1.32-1.92 1.4-.49.08-1.11.11-1.79-.11-.41-.13-.94-.3-1.62-.59-2.85-1.23-4.7-4.1-4.84-4.29-.14-.19-1.15-1.53-1.15-2.92 0-1.39.73-2.07.99-2.35.26-.28.56-.35.75-.35.19 0 .38 0 .54.01.17.01.41-.07.64.49.24.58.81 2 .88 2.15.07.15.12.33.02.53-.1.2-.15.32-.3.49-.15.17-.31.38-.44.51-.15.15-.3.3-.13.59.17.29.77 1.27 1.65 2.06 1.14 1.01 2.1 1.32 2.4 1.47.3.15.47.13.65-.05.18-.18.74-.86.94-1.16.2-.3.4-.25.67-.15.27.1 1.72.81 2.01.96.29.15.49.22.56.35.07.13.07.74-.17 1.43z" /></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Foficinadocarlos.com.br%2Fvideo1.html" 
+               target="_blank" rel="noopener" class="hover:text-blue-500 transition-transform hover:scale-110" title="Facebook">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.593 1.323-1.325V1.325C24 .593 23.407 0 22.675 0z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===== CONTATO FINAL / CTA ===== -->
+  <section class="metal-texture py-16 sm:py-24 mt-auto border-t-4 border-plate-yellow" id="contato" style="background-image: repeating-linear-gradient(-45deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px); background-color: #161513;">
+    <div class="max-w-4xl mx-auto px-5 text-center">
+      <h2 class="font-display text-3xl sm:text-5xl text-cream reveal">Precisa de mecânico de confiança?</h2>
+      <p class="font-oswald text-cream/80 text-lg sm:text-xl mt-4 reveal">Chama o Carlos agora. Resposta rápida, sem
+        complicação.</p>
+      <div class="flex flex-col sm:flex-row gap-4 mt-9 justify-center reveal">
+        <a href="https://wa.me/5571986573751?text=Oi%20Carlos%2C%20vi%20seu%20site%20e%20queria%20marcar%20uma%20revis%C3%A3o"
+          target="_blank" rel="noopener"
+          class="bg-gradient-to-r from-[#20B053] to-[#25D366] shadow-[0_8px_20px_rgba(37,211,102,0.3)] text-white font-oswald font-bold text-lg px-8 py-4 rounded-lg flex items-center justify-center gap-3">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.94.56 3.76 1.53 5.3L2 22l4.92-1.6a9.86 9.86 0 0 0 5.12 1.41h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.05c-.24.69-1.4 1.32-1.92 1.4-.49.08-1.11.11-1.79-.11-.41-.13-.94-.3-1.62-.59-2.85-1.23-4.7-4.1-4.84-4.29-.14-.19-1.15-1.53-1.15-2.92 0-1.39.73-2.07.99-2.35.26-.28.56-.35.75-.35.19 0 .38 0 .54.01.17.01.41-.07.64.49.24.58.81 2 .88 2.15.07.15.12.33.02.53-.1.2-.15.32-.3.49-.15.17-.31.38-.44.51-.15.15-.3.3-.13.59.17.29.77 1.27 1.65 2.06 1.14 1.01 2.1 1.32 2.4 1.47.3.15.47.13.65-.05.18-.18.74-.86.94-1.16.2-.3.4-.25.67-.15.27.1 1.72.81 2.01.96.29.15.49.22.56.35.07.13.07.74-.17 1.43z" />
+          </svg>
+          Falar no WhatsApp
+        </a>
+        <a href="tel:+557198657-3751"
+          class="bg-gradient-to-r from-[#F0A500] to-[#FFC72C] shadow-[0_8px_20px_rgba(255,199,44,0.3)] text-oil-black font-oswald font-bold text-lg px-8 py-4 rounded-lg flex items-center justify-center gap-3">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.25 1.01l-2.2 2.2z" />
+          </svg>
+          (71) 98657-3751
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RODAPÉ ===== -->
+  <footer class="bg-[#0d0c0b] py-10 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-5">
+      <div class="text-center sm:text-left">
+        <a href="index.html" class="flex items-center justify-center sm:justify-start gap-2 group">
+          <div class="bg-plate-yellow p-1.5 rounded-md group-hover:bg-cream transition-colors duration-300 shadow-sm">
+            <svg class="w-5 h-5 text-oil-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+          </div>
+          <span class="font-display text-plate-yellow text-lg sm:text-xl tracking-tight group-hover:text-cream transition-colors duration-300">OFICINA<span class="text-cream group-hover:text-plate-yellow transition-colors duration-300"> DO CARLOS</span></span>
+        </a>
+        <p class="font-body text-cream/60 text-sm mt-1">Av. Aliomar Baleeiro, 11646, Vila Verde — em frente ao Centro de Recuperação e
+          Viver de Juazeiro</p>
+        <p class="font-body text-cream/40 text-xs mt-1">Segunda a sábado, 8h às 18h · (71) 98657-3751</p>
+      </div>
+      <div class="flex gap-3">
+        <a href="https://wa.me/5571986573751" target="_blank" rel="noopener"
+          class="bg-steel hover:bg-[#25D366] transition-colors p-3 rounded-full" aria-label="WhatsApp">
+          <svg class="w-5 h-5 text-cream" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.94.56 3.76 1.53 5.3L2 22l4.92-1.6a9.86 9.86 0 0 0 5.12 1.41h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.05c-.24.69-1.4 1.32-1.92 1.4-.49.08-1.11.11-1.79-.11-.41-.13-.94-.3-1.62-.59-2.85-1.23-4.7-4.1-4.84-4.29-.14-.19-1.15-1.53-1.15-2.92 0-1.39.73-2.07.99-2.35.26-.28.56-.35.75-.35.19 0 .38 0 .54.01.17.01.41-.07.64.49.24.58.81 2 .88 2.15.07.15.12.33.02.53-.1.2-.15.32-.3.49-.15.17-.31.38-.44.51-.15.15-.3.3-.13.59.17.29.77 1.27 1.65 2.06 1.14 1.01 2.1 1.32 2.4 1.47.3.15.47.13.65-.05.18-.18.74-.86.94-1.16.2-.3.4-.25.67-.15.27.1 1.72.81 2.01.96.29.15.49.22.56.35.07.13.07.74-.17 1.43z" />
+          </svg>
+        </a>
+        <a href="tel:+557198657-3751" class="bg-steel hover:bg-plate-yellow transition-colors p-3 rounded-full group"
+          aria-label="Ligar">
+          <svg class="w-5 h-5 text-cream group-hover:text-oil-black" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.25 1.01l-2.2 2.2z" />
+          </svg>
+        </a>
+        <a href="https://instagram.com/carlosmecanicossa" target="_blank" rel="noopener"
+          class="bg-steel hover:bg-[#E1306C] transition-colors p-3 rounded-full group" aria-label="Instagram">
+          <svg class="w-5 h-5 text-cream" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
+          </svg>
+        </a>
+        <a href="https://tiktok.com/@carlosmecanicossa" target="_blank" rel="noopener"
+          class="bg-steel hover:bg-[#EE1D52] transition-colors p-3 rounded-full group" aria-label="TikTok">
+          <svg class="w-5 h-5 text-cream" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 15.66a6.34 6.34 0 0010.86 4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-5 mt-10 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+      <p class="font-body text-cream/40 text-xs sm:text-sm">
+        &copy; 2026 Oficina do Carlos. Todos os direitos reservados.
+      </p>
+      <p class="font-body text-cream/40 text-xs sm:text-sm">
+        Desenvolvido por <a href="https://instagram.com/henrique_ntxa" target="_blank" rel="noopener"
+          class="text-white hover:text-plate-yellow transition-colors font-medium tracking-wide">Henrique Tourinho</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- ===== BOTÃO FLUTUANTE WHATSAPP ===== -->
+  <a href="https://wa.me/5571986573751?text=Oi%20Carlos%2C%20vi%20seu%20site%20e%20queria%20marcar%20uma%20revis%C3%A3o"
+    target="_blank" rel="noopener"
+    class="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-[#20B053] to-[#25D366] shadow-[0_8px_20px_rgba(37,211,102,0.3)] text-white rounded-full p-4 shadow-2xl flex items-center justify-center transition-transform hover:scale-110"
+    aria-label="Falar no WhatsApp">
+    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+      <path
+        d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.94.56 3.76 1.53 5.3L2 22l4.92-1.6a9.86 9.86 0 0 0 5.12 1.41h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.05c-.24.69-1.4 1.32-1.92 1.4-.49.08-1.11.11-1.79-.11-.41-.13-.94-.3-1.62-.59-2.85-1.23-4.7-4.1-4.84-4.29-.14-.19-1.15-1.53-1.15-2.92 0-1.39.73-2.07.99-2.35.26-.28.56-.35.75-.35.19 0 .38 0 .54.01.17.01.41-.07.64.49.24.58.81 2 .88 2.15.07.15.12.33.02.53-.1.2-.15.32-.3.49-.15.17-.31.38-.44.51-.15.15-.3.3-.13.59.17.29.77 1.27 1.65 2.06 1.14 1.01 2.1 1.32 2.4 1.47.3.15.47.13.65-.05.18-.18.74-.86.94-1.16.2-.3.4-.25.67-.15.27.1 1.72.81 2.01.96.29.15.49.22.56.35.07.13.07.74-.17 1.43z" />
+    </svg>
+  </a>
+
+  <!-- PLAYER SCRIPTS -->
+  <script>
+    function cpFmt(t) {
+      if (isNaN(t)) return '0:00';
+      const m = Math.floor(t / 60), s = Math.floor(t % 60);
+      return m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    document.querySelectorAll('.custom-player').forEach(wrapper => {
+      const vid = wrapper.querySelector('video');
+      const playIcon = wrapper.querySelector('.play-icon');
+      const pauseIcon = wrapper.querySelector('.pause-icon');
+      const progFilled = wrapper.querySelector('.prog-filled');
+      const timeEl = wrapper.querySelector('.cp-time');
+
+      vid.addEventListener('click', (e) => { e.stopPropagation(); if (vid.paused) vid.play(); else vid.pause(); });
+      vid.addEventListener('play', () => { wrapper.classList.remove('paused'); playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden'); });
+      vid.addEventListener('pause', () => { wrapper.classList.add('paused'); playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden'); });
+      vid.addEventListener('timeupdate', () => {
+        if (vid.duration) {
+          progFilled.style.width = (vid.currentTime / vid.duration * 100) + '%';
+          timeEl.textContent = cpFmt(vid.currentTime) + ' / ' + cpFmt(vid.duration);
+        }
+      });
+      vid.addEventListener('loadedmetadata', () => { timeEl.textContent = '0:00 / ' + cpFmt(vid.duration); });
+      vid.addEventListener('ended', () => { vid.currentTime = 0; vid.pause(); });
+
+      const progBar = wrapper.querySelector('.prog-bar');
+      const hoverTip = wrapper.querySelector('.prog-hover-tip');
+      progBar.addEventListener('mousemove', (e) => {
+        const rect = progBar.getBoundingClientRect();
+        const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        hoverTip.textContent = cpFmt(pos * (vid.duration || 0));
+        hoverTip.style.left = (pos * 100) + '%';
+        hoverTip.style.opacity = '1';
+      });
+      progBar.addEventListener('mouseleave', () => { hoverTip.style.opacity = '0'; });
+
+      const volGroup = wrapper.querySelector('.cp-vol-group');
+      const volPopup = wrapper.querySelector('.cp-vol-popup');
+      let volTimer;
+      volGroup.addEventListener('mouseenter', () => { clearTimeout(volTimer); volPopup.classList.add('show'); });
+      volGroup.addEventListener('mouseleave', () => { volTimer = setTimeout(() => volPopup.classList.remove('show'), 300); });
+
+      document.addEventListener('click', () => {
+        wrapper.querySelectorAll('.cp-speed-popup.show, .cp-quality-popup.show').forEach(p => p.classList.remove('show'));
+      });
+
+      let hideT;
+      wrapper.addEventListener('mousemove', () => {
+        wrapper.querySelector('.player-controls').style.opacity = '1';
+        clearTimeout(hideT);
+        hideT = setTimeout(() => { if (!vid.paused) wrapper.querySelector('.player-controls').style.opacity = '0'; }, 2500);
+      });
+    });
+
+    function cpTogglePlay(el) {
+      const w = el.closest('.custom-player');
+      const v = w.querySelector('video');
+      if (v.paused) v.play(); else v.pause();
+    }
+    function cpToggleMute(btn) {
+      const w = btn.closest('.custom-player');
+      const v = w.querySelector('video');
+      v.muted = !v.muted;
+      w.querySelector('.cp-vol-icon').classList.toggle('hidden', v.muted);
+      w.querySelector('.cp-mute-icon').classList.toggle('hidden', !v.muted);
+      const val = v.muted ? 0 : v.volume;
+      w.querySelector('.cp-vol-slider').value = val;
+      w.querySelector('.cp-vol-pct').textContent = Math.round(val * 100) + '%';
+      w.querySelector('.cp-vol-slider').style.setProperty('--vf', (val * 100) + '%');
+    }
+    function cpVolChange(slider) {
+      const w = slider.closest('.custom-player');
+      const v = w.querySelector('video');
+      const val = parseFloat(slider.value);
+      v.volume = val; v.muted = val === 0;
+      w.querySelector('.cp-vol-icon').classList.toggle('hidden', val === 0);
+      w.querySelector('.cp-mute-icon').classList.toggle('hidden', val > 0);
+      w.querySelector('.cp-vol-pct').textContent = Math.round(val * 100) + '%';
+      slider.style.setProperty('--vf', (val * 100) + '%');
+    }
+    function cpToggleSpeed(btn) {
+      event.stopPropagation();
+      btn.closest('.custom-player').querySelectorAll('.cp-quality-popup.show').forEach(p => p.classList.remove('show'));
+      btn.closest('.cp-speed-group').querySelector('.cp-speed-popup').classList.toggle('show');
+    }
+    function cpToggleQuality(btn) {
+      event.stopPropagation();
+      btn.closest('.custom-player').querySelectorAll('.cp-speed-popup.show').forEach(p => p.classList.remove('show'));
+      btn.closest('.cp-quality-group').querySelector('.cp-quality-popup').classList.toggle('show');
+    }
+    function cpSetSpeed(opt) {
+      event.stopPropagation();
+      const w = opt.closest('.custom-player');
+      const rate = parseFloat(opt.dataset.speed);
+      w.querySelector('video').playbackRate = rate;
+      w.querySelector('.cp-speed-btn span').textContent = rate === 1 ? '1x' : rate + 'x';
+      w.querySelectorAll('.cp-speed-opt').forEach(o => o.classList.remove('active'));
+      opt.classList.add('active');
+      opt.closest('.cp-speed-popup').classList.remove('show');
+    }
+    function cpSetQuality(opt) {
+      event.stopPropagation();
+      const w = opt.closest('.custom-player');
+      w.querySelectorAll('.cp-quality-opt').forEach(o => o.classList.remove('active'));
+      opt.classList.add('active');
+      opt.closest('.cp-quality-popup').classList.remove('show');
+    }
+    function cpSeekStart(e, bar) {
+      e.stopPropagation();
+      const v = bar.closest('.custom-player').querySelector('video');
+      const doSeek = (ev) => {
+        const rect = bar.getBoundingClientRect();
+        v.currentTime = Math.max(0, Math.min(1, (ev.clientX - rect.left) / rect.width)) * v.duration;
+      };
+      doSeek(e);
+      const onMove = (ev) => doSeek(ev);
+      const onUp = () => { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); };
+      document.addEventListener('mousemove', onMove); document.addEventListener('mouseup', onUp);
+    }
+    function cpFullscreen(btn) {
+      const w = btn.closest('.custom-player');
+      if (!document.fullscreenElement) w.requestFullscreen?.() || w.webkitRequestFullscreen?.();
+      else document.exitFullscreen?.() || document.webkitExitFullscreen?.();
+    }
+  </script>
+</body>
+</html>
