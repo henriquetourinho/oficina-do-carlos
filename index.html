@@ -539,6 +539,111 @@
       transform: translate(-50%, -50%) scale(1.15);
       background: rgba(255, 199, 44, 1);
     }
+    /* Hover time tooltip */
+    .prog-hover-tip {
+      position: absolute;
+      bottom: 16px;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.85);
+      color: #fff;
+      font-size: 11px;
+      font-family: 'Inter', sans-serif;
+      padding: 3px 6px;
+      border-radius: 4px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    /* Volume Popup */
+    .cp-vol-group { position: relative; display: flex; align-items: center; }
+    .cp-vol-popup {
+      position: absolute;
+      bottom: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      background: rgba(20, 20, 20, 0.95);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 12px 10px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s;
+    }
+    .cp-vol-popup.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .cp-vol-slider {
+      -webkit-appearance: none; appearance: none;
+      writing-mode: vertical-lr; direction: rtl;
+      width: 4px; height: 80px; border-radius: 2px;
+      background: rgba(255,255,255,0.2);
+      cursor: pointer;
+    }
+    .cp-vol-slider::-webkit-slider-runnable-track {
+      width: 4px; height: 80px; border-radius: 2px;
+      background: linear-gradient(to top, #FFC72C 0%, #FFC72C var(--vf, 100%), rgba(255,255,255,0.2) var(--vf, 100%), rgba(255,255,255,0.2) 100%);
+    }
+    .cp-vol-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 12px; height: 12px; border-radius: 50%; background: #fff; cursor: pointer; margin-left: -4px;
+    }
+    .cp-vol-pct { font-size: 10px; font-weight: 700; color: #ccc; }
+
+    /* Speed Popup */
+    .cp-speed-group { position: relative; display: flex; align-items: center; }
+    .cp-speed-popup {
+      position: absolute;
+      bottom: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      background: rgba(20, 20, 20, 0.95);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 6px 0;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s;
+      min-width: 100px;
+    }
+    .cp-speed-popup.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .cp-speed-opt {
+      background: none; border: none; color: #ccc; padding: 6px 12px; text-align: left;
+      font-size: 12px; cursor: pointer; transition: background 0.15s; font-family: 'Inter', sans-serif;
+    }
+    .cp-speed-opt:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .cp-speed-opt.active { color: #FFC72C; font-weight: bold; }
+    .cp-share-btn { color: #fff; }
+    .cp-share-btn:hover { color: #25D366; }
+
+    /* About Popup */
+    .cp-about-group { position: relative; display: flex; align-items: center; }
+    .cp-about-popup {
+      position: absolute;
+      bottom: calc(100% + 12px);
+      right: 0;
+      background: rgba(20, 20, 20, 0.95);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 12px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s;
+      min-width: 150px;
+      text-align: right;
+      transform: translateY(6px);
+      pointer-events: none;
+    }
+    .cp-about-group:hover .cp-about-popup { 
+      opacity: 1; 
+      visibility: visible; 
+      transform: translateY(0); 
+      pointer-events: auto;
+    }
   </style>
 
 
@@ -1201,27 +1306,77 @@
       } else if (type === 'video') {
         content.innerHTML = `
       <div class="custom-player paused" onclick="event.stopPropagation()">
-        <video src="${src}" playsinline></video>
-        <div class="big-play" onclick="togglePlay(this)">
+        <video src="${src}" playsinline style="cursor:pointer"></video>
+        <div class="big-play" onclick="cpTogglePlay(this)">
           <svg class="w-10 h-10 text-oil-black ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         </div>
-        <div class="player-controls">
-          <div class="prog-bar" onclick="seekVid(event, this)">
+        <div class="player-controls" onclick="event.stopPropagation()">
+          <div class="prog-bar" onmousedown="cpSeekStart(event, this)">
             <div class="prog-filled"></div>
+            <div class="prog-hover-tip">0:00</div>
           </div>
           <div class="ctrl-row">
-            <button class="ctrl-btn play-btn" onclick="togglePlay(this)">
-              <svg class="w-8 h-8 play-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-              <svg class="w-8 h-8 pause-icon hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-            </button>
-            <button class="ctrl-btn mute-btn" onclick="toggleMute(this)">
-              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M17.657 6.343a8 8 0 010 11.314M11 5L6 9H2v6h4l5 4V5z"/></svg>
-            </button>
+            <div style="display:flex;align-items:center;gap:8px">
+              <button class="ctrl-btn play-btn" onclick="cpTogglePlay(this)">
+                <svg class="w-7 h-7 play-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="w-7 h-7 pause-icon hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+              </button>
+              <span class="cp-time" style="color:#fff;font-size:13px;font-family:Inter,sans-serif;white-space:nowrap;user-select:none">0:00 / 0:00</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px">
+              <!-- Volume -->
+              <div class="cp-vol-group">
+                <button class="ctrl-btn cp-mute-btn" onclick="cpToggleMute(this)">
+                  <svg class="w-6 h-6 cp-vol-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                  <svg class="w-6 h-6 cp-mute-icon hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+                </button>
+                <div class="cp-vol-popup">
+                  <input type="range" class="cp-vol-slider" min="0" max="1" step="0.01" value="1" orient="vertical" oninput="cpVolChange(this)">
+                  <span class="cp-vol-pct">100%</span>
+                </div>
+              </div>
+              <!-- Speed -->
+              <div class="cp-speed-group">
+                <button class="ctrl-btn cp-speed-btn" onclick="cpToggleSpeed(this)">
+                  <span style="font-size:13px;font-weight:700;font-family:Inter,sans-serif">1x</span>
+                </button>
+                <div class="cp-speed-popup">
+                  <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:6px 14px 8px;border-bottom:1px solid rgba(255,255,255,0.08)">Velocidade</div>
+                  <button class="cp-speed-opt" data-speed="0.5" onclick="cpSetSpeed(this)">0.5x</button>
+                  <button class="cp-speed-opt" data-speed="0.75" onclick="cpSetSpeed(this)">0.75x</button>
+                  <button class="cp-speed-opt active" data-speed="1" onclick="cpSetSpeed(this)">Normal</button>
+                  <button class="cp-speed-opt" data-speed="1.25" onclick="cpSetSpeed(this)">1.25x</button>
+                  <button class="cp-speed-opt" data-speed="1.5" onclick="cpSetSpeed(this)">1.5x</button>
+                  <button class="cp-speed-opt" data-speed="2" onclick="cpSetSpeed(this)">2x</button>
+                </div>
+              </div>
+              <!-- Share WhatsApp -->
+              <a href="https://wa.me/?text=Olha%20essa%20oficina%20mec%C3%A2nica%20de%20confian%C3%A7a%20em%20Salvador%3A%20https%3A%2F%2Foficinadocarlos.com.br%2F" target="_blank" rel="noopener" class="ctrl-btn cp-share-btn" title="Compartilhar no WhatsApp" onclick="event.stopPropagation()">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.94.56 3.76 1.53 5.3L2 22l4.92-1.6a9.86 9.86 0 0 0 5.12 1.41h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.05c-.24.69-1.4 1.32-1.92 1.4-.49.08-1.11.11-1.79-.11-.41-.13-.94-.3-1.62-.59-2.85-1.23-4.7-4.1-4.84-4.29-.14-.19-1.15-1.53-1.15-2.92 0-1.39.73-2.07.99-2.35.26-.28.56-.35.75-.35.19 0 .38 0 .54.01.17.01.41-.07.64.49.24.58.81 2 .88 2.15.07.15.12.33.02.53-.1.2-.15.32-.3.49-.15.17-.31.38-.44.51-.15.15-.3.3-.13.59.17.29.77 1.27 1.65 2.06 1.14 1.01 2.1 1.32 2.4 1.47.3.15.47.13.65-.05.18-.18.74-.86.94-1.16.2-.3.4-.25.67-.15.27.1 1.72.81 2.01.96.29.15.49.22.56.35.07.13.07.74-.17 1.43z"/></svg>
+              </a>
+              <!-- About / Credits -->
+              <div class="cp-about-group">
+                <button class="ctrl-btn" title="Sobre o Player" onclick="event.stopPropagation()">
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+                </button>
+                <div class="cp-about-popup">
+                  <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px">Custom Player</div>
+                  <div style="font-size:12px;color:#fff;line-height:1.5;font-family:Inter,sans-serif">
+                    Desenvolvido por<br>
+                    <a href="https://instagram.com/henrique_ntxa" target="_blank" style="color:#FFC72C;text-decoration:none;font-weight:700">Henrique Tourinho</a>
+                  </div>
+                </div>
+              </div>
+              <!-- Fullscreen -->
+              <button class="ctrl-btn" onclick="cpFullscreen(this)" title="Tela cheia">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     `;
-        setupPlayer(content.querySelector('.custom-player'));
+        cpSetupPlayer(content.querySelector('.custom-player'));
       }
 
       lb.classList.add('active');
@@ -1232,17 +1387,31 @@
       if (!force && e.target !== document.getElementById('lightbox')) return;
       const lb = document.getElementById('lightbox');
       const vid = document.querySelector('#lightbox-content video');
-      if (vid) vid.pause();
+      if (vid) {
+        vid.pause();
+        vid.removeAttribute('src'); // Limpa o source pra não continuar baixando
+        vid.load();
+      }
       lb.classList.remove('active');
       document.body.style.overflow = '';
       setTimeout(() => { document.getElementById('lightbox-content').innerHTML = ''; }, 400);
     }
 
-    function setupPlayer(wrapper) {
+    function cpFmt(t) {
+      if (isNaN(t)) return '0:00';
+      const m = Math.floor(t / 60), s = Math.floor(t % 60);
+      return m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    function cpSetupPlayer(wrapper) {
       const vid = wrapper.querySelector('video');
       const playIcon = wrapper.querySelector('.play-icon');
       const pauseIcon = wrapper.querySelector('.pause-icon');
       const progFilled = wrapper.querySelector('.prog-filled');
+      const timeEl = wrapper.querySelector('.cp-time');
+
+      // Click on video area = play/pause
+      vid.addEventListener('click', (e) => { e.stopPropagation(); if (vid.paused) vid.play(); else vid.pause(); });
 
       vid.addEventListener('play', () => {
         wrapper.classList.remove('paused');
@@ -1255,36 +1424,126 @@
         pauseIcon.classList.add('hidden');
       });
       vid.addEventListener('timeupdate', () => {
-        const p = (vid.currentTime / vid.duration) * 100;
-        progFilled.style.width = p + '%';
+        if (vid.duration) {
+          progFilled.style.width = (vid.currentTime / vid.duration * 100) + '%';
+          timeEl.textContent = cpFmt(vid.currentTime) + ' / ' + cpFmt(vid.duration);
+        }
       });
-      vid.addEventListener('ended', () => {
-        vid.currentTime = 0; vid.pause();
+      vid.addEventListener('loadedmetadata', () => {
+        timeEl.textContent = '0:00 / ' + cpFmt(vid.duration);
+      });
+      vid.addEventListener('ended', () => { vid.currentTime = 0; vid.pause(); });
+
+      // Hover time on progress bar
+      const progBar = wrapper.querySelector('.prog-bar');
+      const hoverTip = wrapper.querySelector('.prog-hover-tip');
+      progBar.addEventListener('mousemove', (e) => {
+        const rect = progBar.getBoundingClientRect();
+        const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        hoverTip.textContent = cpFmt(pos * (vid.duration || 0));
+        hoverTip.style.left = (pos * 100) + '%';
+        hoverTip.style.opacity = '1';
+      });
+      progBar.addEventListener('mouseleave', () => { hoverTip.style.opacity = '0'; });
+
+      // Volume popup hover
+      const volGroup = wrapper.querySelector('.cp-vol-group');
+      const volPopup = wrapper.querySelector('.cp-vol-popup');
+      let volTimer;
+      volGroup.addEventListener('mouseenter', () => { clearTimeout(volTimer); volPopup.classList.add('show'); });
+      volGroup.addEventListener('mouseleave', () => { volTimer = setTimeout(() => volPopup.classList.remove('show'), 300); });
+
+      // Speed popup click outside close
+      document.addEventListener('click', () => {
+        wrapper.querySelectorAll('.cp-speed-popup.show').forEach(p => p.classList.remove('show'));
+      });
+
+      // Auto-hide controls
+      let hideT;
+      wrapper.addEventListener('mousemove', () => {
+        wrapper.querySelector('.player-controls').style.opacity = '1';
+        clearTimeout(hideT);
+        hideT = setTimeout(() => { if (!vid.paused) wrapper.querySelector('.player-controls').style.opacity = '0'; }, 2500);
       });
 
       // Autoplay
-      setTimeout(() => { vid.play().catch(e => console.log('Autoplay prevented')); }, 200);
+      setTimeout(() => { vid.play().catch(() => {}); }, 200);
     }
 
-    function togglePlay(el) {
-      const wrapper = el.closest('.custom-player');
-      const vid = wrapper.querySelector('video');
-      if (vid.paused) vid.play();
-      else vid.pause();
+    function cpTogglePlay(el) {
+      const w = el.closest('.custom-player');
+      const v = w.querySelector('video');
+      if (v.paused) v.play(); else v.pause();
     }
 
-    function toggleMute(btn) {
-      const vid = btn.closest('.custom-player').querySelector('video');
-      vid.muted = !vid.muted;
-      btn.style.opacity = vid.muted ? '0.5' : '1';
+    function cpToggleMute(btn) {
+      const w = btn.closest('.custom-player');
+      const v = w.querySelector('video');
+      const volIcon = w.querySelector('.cp-vol-icon');
+      const muteIcon = w.querySelector('.cp-mute-icon');
+      const slider = w.querySelector('.cp-vol-slider');
+      const pct = w.querySelector('.cp-vol-pct');
+      v.muted = !v.muted;
+      volIcon.classList.toggle('hidden', v.muted);
+      muteIcon.classList.toggle('hidden', !v.muted);
+      const val = v.muted ? 0 : v.volume;
+      slider.value = val;
+      pct.textContent = Math.round(val * 100) + '%';
+      slider.style.setProperty('--vf', (val * 100) + '%');
     }
 
-    function seekVid(e, bar) {
-      const wrapper = bar.closest('.custom-player');
-      const vid = wrapper.querySelector('video');
-      const rect = bar.getBoundingClientRect();
-      const pos = (e.clientX - rect.left) / rect.width;
-      vid.currentTime = pos * vid.duration;
+    function cpVolChange(slider) {
+      const w = slider.closest('.custom-player');
+      const v = w.querySelector('video');
+      const val = parseFloat(slider.value);
+      v.volume = val;
+      v.muted = val === 0;
+      const volIcon = w.querySelector('.cp-vol-icon');
+      const muteIcon = w.querySelector('.cp-mute-icon');
+      volIcon.classList.toggle('hidden', val === 0);
+      muteIcon.classList.toggle('hidden', val > 0);
+      w.querySelector('.cp-vol-pct').textContent = Math.round(val * 100) + '%';
+      slider.style.setProperty('--vf', (val * 100) + '%');
+    }
+
+    function cpToggleSpeed(btn) {
+      event.stopPropagation();
+      const popup = btn.closest('.cp-speed-group').querySelector('.cp-speed-popup');
+      popup.classList.toggle('show');
+    }
+
+    function cpSetSpeed(opt) {
+      event.stopPropagation();
+      const w = opt.closest('.custom-player');
+      const v = w.querySelector('video');
+      const rate = parseFloat(opt.dataset.speed);
+      v.playbackRate = rate;
+      w.querySelector('.cp-speed-btn span').textContent = rate === 1 ? '1x' : rate + 'x';
+      w.querySelectorAll('.cp-speed-opt').forEach(o => o.classList.remove('active'));
+      opt.classList.add('active');
+      opt.closest('.cp-speed-popup').classList.remove('show');
+    }
+
+    function cpSeekStart(e, bar) {
+      e.stopPropagation();
+      const w = bar.closest('.custom-player');
+      const v = w.querySelector('video');
+      const doSeek = (ev) => {
+        const rect = bar.getBoundingClientRect();
+        const pos = Math.max(0, Math.min(1, (ev.clientX - rect.left) / rect.width));
+        v.currentTime = pos * v.duration;
+      };
+      doSeek(e);
+      const onMove = (ev) => doSeek(ev);
+      const onUp = () => { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); };
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    }
+
+    function cpFullscreen(btn) {
+      const w = btn.closest('.custom-player');
+      if (!document.fullscreenElement) w.requestFullscreen?.() || w.webkitRequestFullscreen?.();
+      else document.exitFullscreen?.() || document.webkitExitFullscreen?.();
     }
   </script>
 </body>
