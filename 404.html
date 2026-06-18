@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página não encontrada - Oficina do Carlos</title>
+  <meta name="description" content="Erro 404 - A página que você tentou acessar não existe.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'oil-black': '#161513',
+            'plate-yellow': '#FFC72C',
+            'shop-red': '#C8102E',
+            'shop-red-dark': '#8E0B20',
+            'steel': '#3A3A38',
+            'steel-light': '#5C5B57',
+            'cream': '#F2EDE4',
+          },
+          fontFamily: {
+            'display': ['Archivo Black', 'sans-serif'],
+            'oswald': ['Oswald', 'sans-serif'],
+            'body': ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { background-color: #F2EDE4; font-family: 'Inter', sans-serif; }
+    .font-display { font-family: 'Archivo Black', sans-serif; }
+    .font-oswald { font-family: 'Oswald', sans-serif; }
+  </style>
+</head>
+
+<body class="bg-cream text-oil-black antialiased flex flex-col min-h-screen">
+
+  <!-- HEADER -->
+  <header class="fixed top-0 left-0 w-full z-50 bg-oil-black/90 backdrop-blur-md border-b-4 border-plate-yellow transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-center">
+      <a href="index.html" class="flex items-center gap-2 group">
+        <div class="bg-plate-yellow p-1.5 rounded-md group-hover:bg-cream transition-colors duration-300 shadow-sm">
+          <svg class="w-6 h-6 text-oil-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+        </div>
+        <span class="font-display text-plate-yellow text-2xl tracking-tight group-hover:text-cream transition-colors duration-300">OFICINA<span class="text-cream group-hover:text-plate-yellow transition-colors duration-300"> DO CARLOS</span></span>
+      </a>
+    </div>
+  </header>
+
+  <!-- 404 CONTENT -->
+  <main class="flex-grow flex items-center justify-center px-5 pt-32 pb-24">
+    <div class="text-center max-w-2xl mx-auto">
+      <h1 class="font-display text-8xl sm:text-9xl text-shop-red leading-none mb-4">404</h1>
+      <h2 class="font-display text-3xl sm:text-5xl text-oil-black leading-tight mb-6">Opa! Parece que o motor desse link fundiu...</h2>
+      <p class="font-body text-steel text-lg sm:text-xl mb-10 leading-relaxed">A página que você está procurando não existe ou foi movida. Mas não se preocupe, a gente dá um jeito nisso rapidinho!</p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="index.html" class="bg-oil-black text-white font-oswald font-bold text-lg px-8 py-4 rounded-lg flex items-center justify-center gap-3 hover:bg-steel transition-colors shadow-lg">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Voltar para a Oficina
+        </a>
+        <a href="https://wa.me/5571986573751" target="_blank" rel="noopener" class="bg-gradient-to-r from-[#20B053] to-[#25D366] shadow-[0_8px_20px_rgba(37,211,102,0.3)] text-white font-oswald font-bold text-lg px-8 py-4 rounded-lg flex items-center justify-center gap-3 hover:scale-105 transition-transform">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.94.56 3.76 1.53 5.3L2 22l4.92-1.6a9.86 9.86 0 0 0 5.12 1.41h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.05c-.24.69-1.4 1.32-1.92 1.4-.49.08-1.11.11-1.79-.11-.41-.13-.94-.3-1.62-.59-2.85-1.23-4.7-4.1-4.84-4.29-.14-.19-1.15-1.53-1.15-2.92 0-1.39.73-2.07.99-2.35.26-.28.56-.35.75-.35.19 0 .38 0 .54.01.17.01.41-.07.64.49.24.58.81 2 .88 2.15.07.15.12.33.02.53-.1.2-.15.32-.3.49-.15.17-.31.38-.44.51-.15.15-.3.3-.13.59.17.29.77 1.27 1.65 2.06 1.14 1.01 2.1 1.32 2.4 1.47.3.15.47.13.65-.05.18-.18.74-.86.94-1.16.2-.3.4-.25.67-.15.27.1 1.72.81 2.01.96.29.15.49.22.56.35.07.13.07.74-.17 1.43z" /></svg>
+          Chamar no WhatsApp
+        </a>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
